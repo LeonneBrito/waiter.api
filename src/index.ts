@@ -1,12 +1,15 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import path from 'node:path';
 import express from 'express';
 import mongoose from 'mongoose';
 
 import { router } from './router';
 
-const port = 3001;
+const PORT = process.env.PORT || 3001;
 
-mongoose.connect('mongodb://localhost:27017')
+mongoose.connect(`mongodb://localhost:${process.env.MONGO_PORT}`)
   .then(() => {
     console.log('🚀 Connected to MongoDB');
 
@@ -16,8 +19,8 @@ mongoose.connect('mongodb://localhost:27017')
     app.use(express.json());
     app.use(router);
 
-    app.listen(port, () => {
-      console.log(`🔥 Server is running on port http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`🔥 Server is running on port http://localhost:${PORT}`);
     });
   })
   .catch(err => console.error('❌ Could not connect to MongoDB', err));
